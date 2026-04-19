@@ -54,7 +54,7 @@ function openInternal(url) {
     particles.forEach(p => {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${p.alpha})`;
+      ctx.fillStyle = `rgba(190, 220, 255,${p.alpha})`;
       ctx.fill();
 
       p.y -= p.speedY;

@@ -212,7 +212,7 @@ h2 {
   border-radius: 8px;
   color: white;
   text-decoration: none;
-  transition: transform 0.2s
+  transition: transform 0.2s ease;
 }
 
 #modal-link:hover {
