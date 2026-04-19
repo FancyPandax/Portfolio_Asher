@@ -1,0 +1,121 @@
+#resume {
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 2.5rem;
+  background: #0f172a; /* dark slate */
+  color: #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Name */
+#resume h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.2rem;
+  font-weight: 700;
+}
+
+/* Subtitle */
+#resume p:first-of-type {
+  color: #94a3b8;
+  margin-bottom: 1.5rem;
+}
+
+/* Section headers */
+#resume h2 {
+  margin-top: 2.5rem;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #38bdf8;
+  border-left: 4px solid #38bdf8;
+  padding-left: 10px;
+}
+
+/* Job block */
+.job {
+  margin-top: 1.5rem;
+  padding: 1rem 1.2rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  transition: 0.2s ease;
+}
+
+.job:hover {
+  background: rgba(255,255,255,0.06);
+  transform: translateY(-2px);
+}
+
+/* Job title */
+.job h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Dates */
+.job span {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+/* Bullet points */
+.job ul {
+  margin-top: 0.7rem;
+  padding-left: 1.2rem;
+}
+
+.job li {
+  margin-bottom: 0.4rem;
+  line-height: 1.5;
+}
+
+/* Links */
+#resume a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+#resume a:hover {
+  text-decoration: underline;
+}
+
+/* Skills block */
+#resume .skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.skill {
+  background: #1e293b;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.skill:hover {
+    transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(56,189,248,0.5);
+
+}
+
+/* Resume button */
+.resume-btn {
+  display: inline-block;
+  margin-top: 2.5rem;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, darkred, purple);
+  color: black;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.resume-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(56,189,248,0.5);
+}

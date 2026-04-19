@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rift Wilds: Rune Alignment</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: radial-gradient(circle at top, #1a1a2e, #0d0d1a);
+    color: #fff;
+    min-height: 100vh;
+  }
+
+  h1 {
+    margin: 20px 0;
+    font-size: 24px;
+    text-shadow: 0 0 10px #ffb700;
+  }
+
+  #score {
+    margin-bottom: 20px;
+    font-size: 18px;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #6a0dad, #ffb700);
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(255,187,0,0.5);
+  }
+
+  #board {
+    display: grid;
+    grid-template-columns: repeat(6, 70px);
+    grid-template-rows: repeat(6, 70px);
+    gap: 8px;
+    padding: 10px;
+    background: rgba(20,20,40,0.5);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255,255,255,0.1);
+    position: relative;
+  }
+
+  .rune {
+    width: 70px;
+    height: 70px;
+    border-radius: 15px;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease, box-shadow 0.3s, opacity 0.3s;
+    box-shadow: 0 0 8px rgba(255,255,255,0.2);
+    position: relative;
+  }
+
+  .rune:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
+  }
+
+  .fade {
+    opacity: 0;
+    transform: scale(0.1) rotate(-20deg);
+  }
+
+  .selected {
+    border: 3px solid #ffb700;
+    box-shadow: 0 0 15px #ffb700;
+  }
+
+  .power {
+    animation: powerGlow 1s infinite alternate;
+    border: 2px solid #ff00ff;
+    box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff inset;
+  }
+
+  @keyframes powerGlow {
+    0% { transform: scale(1.05); box-shadow: 0 0 15px #ff00ff, 0 0 30px #ff00ff inset; }
+    100% { transform: scale(1.15); box-shadow: 0 0 25px #ff00ff, 0 0 50px #ff00ff inset; }
+  }
+
+  @keyframes bounce {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(-5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+  }
+
+  @keyframes burst {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1.5) rotate(15deg); opacity: 0.8; }
+    100% { transform: scale(0) rotate(30deg); opacity: 0; }
+  }
+  button {
+  margin-bottom: 15px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #ffb700;
+  font-family: 'Press Start 2P', cursive;
+  cursor: pointer;
+}
+.game-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.top-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: #ffb700;
+  font-family: 'Press Start 2P', cursive;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.2);
+  transform: scale(1.05);
+}
+button:active {
+  transform: scale(0.95);
+}
+.combo-text {
+  position: absolute;
+  font-size: 14px;
+  color: #ffb700;
+  pointer-events: none;
+  animation: floatUp 0.8s ease-out forwards;
+  text-shadow: 0 0 10px #ffb700;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(1.3);
+  }
+}
+
+#score {
+  margin: 10px 0 20px;
+}
+</style>
+</head>
+<body>
+<header class="game-header">
+  <h1>Rift Wilds: Rune Alignment</h1>
+
+  <div class="top-controls">
+    <button onclick="goBack()">← Back to Portfolio</button>
+    <button onclick="restartGame()">Restart</button>
+  </div>
+</header>
+
+<div id="score">Score: 0</div>
+<div id="board"></div>
+
+<script>
+const runes = [
+  '../images/Machine.jpg',
+  '../images/Evil.jpg',
+  '../images/earth.jpg',
+  '../images/Rift.jpg',
+  '../images/Djinn.jpg',
+  '../images/Sound.jpg'
+];
+const powerRune = '../images/power.jpg';
+const boardSize = 6;
+let board = [];
+let firstSelected = null;
+let score = 0;
+const boardDiv = document.getElementById('board');
+const scoreDiv = document.getElementById('score');
+
+function randomRune() { return runes[Math.floor(Math.random()*runes.length)]; }
+
+function createBoard() {
+  board = [];
+  boardDiv.innerHTML = '';
+  for (let i=0;i<boardSize*boardSize;i++){
+    board.push(randomRune());
+    const div=document.createElement('div');
+    div.classList.add('rune');
+    div.dataset.index=i;
+    div.style.backgroundImage=`url(${board[i]})`;
+    div.style.transform=`translateY(-100px)`;
+    div.addEventListener('click',()=>selectRune(i));
+    boardDiv.appendChild(div);
+    setTimeout(()=>{ div.style.transform='translateY(0)'; },50*i);
+  }
+}
+
+function selectRune(index){
+  const selectedDiv=boardDiv.children[index];
+
+  // Activate power rune
+  if(board[index]===powerRune){
+    activatePowerRune(index);
+    return;
+  }
+
+  if(!firstSelected){
+    firstSelected=index;
+    selectedDiv.classList.add('selected');
+    return;
+  }
+  if(isAdjacent(firstSelected,index)){
+    swapRunes(firstSelected,index);
+    setTimeout(()=>checkMatches(true),200);
+  }
+  boardDiv.children[firstSelected].classList.remove('selected');
+  firstSelected=null;
+}
+
+function isAdjacent(a,b){
+  const rowA=Math.floor(a/boardSize), colA=a%boardSize;
+  const rowB=Math.floor(b/boardSize), colB=b%boardSize;
+  return Math.abs(rowA-rowB)+Math.abs(colA-colB)===1;
+}
+
+function swapRunes(a,b){
+  [board[a],board[b]]=[board[b],board[a]];
+  updateRuneDiv(a);
+  updateRuneDiv(b);
+}
+
+function updateRuneDiv(i){
+  const div=boardDiv.children[i];
+  div.style.backgroundImage=`url(${board[i]})`;
+  div.classList.remove('fade');
+  div.classList.remove('power');
+  if(board[i]===powerRune) div.classList.add('power');
+}
+
+function applyGravity(){
+  for(let c=0;c<boardSize;c++){
+    let column = [];
+    for(let r=0;r<boardSize;r++){
+      column.push(board[r*boardSize+c]);
+    }
+    let emptyCount = column.filter(v=>v===null).length;
+    column = column.filter(v=>v!==null);
+    for(let i=0;i<emptyCount;i++) column.unshift(randomRune());
+    for(let r=0;r<boardSize;r++){
+      const i=r*boardSize+c;
+      if(board[i]!==column[r]){
+        board[i]=column[r];
+        const div=boardDiv.children[i];
+        div.style.transform='translateY(-100px) rotate(5deg)';
+        setTimeout(()=>{ div.style.transform='translateY(0) rotate(0deg)'; },50*r);
+        updateRuneDiv(i);
+      }
+    }
+  }
+}
+
+function animateMatch(i){
+  const div=boardDiv.children[i];
+  div.style.animation='bounce 0.3s';
+  setTimeout(()=>{ div.style.animation=''; },300);
+}
+
+function checkMatches(chain=false){
+  let matched=new Set();
+  let specialRunes=[];
+
+  for(let r=0;r<boardSize;r++){
+    for(let c=0;c<boardSize-2;c++){
+      const i=r*boardSize+c;
+      if(board[i] && board[i]===board[i+1] && board[i]===board[i+2]){
+        matched.add(i); matched.add(i+1); matched.add(i+2);
+        if(c<boardSize-3 && board[i]===board[i+3]) specialRunes.push(i+3);
+      }
+    }
+  }
+
+  for(let c=0;c<boardSize;c++){
+    for(let r=0;r<boardSize-2;r++){
+      const i=r*boardSize+c;
+      if(board[i] && board[i]===board[i+boardSize] && board[i]===board[i+2*boardSize]){
+        matched.add(i); matched.add(i+boardSize); matched.add(i+2*boardSize);
+        if(r<boardSize-3 && board[i]===board[i+3*boardSize]) specialRunes.push(i+3*boardSize);
+      }
+    }
+  }
+
+  if(matched.size>0){
+    score+=matched.size*10;
+    scoreDiv.textContent='Score: '+score;
+    matched.forEach(i => {
+  showComboText(i, 10);
+});
+    matched.forEach(i=>animateMatch(i));
+    setTimeout(()=>{
+      matched.forEach(i=>board[i]=null);
+      applyGravity();
+      specialRunes.forEach(i=>{
+        board[i]=powerRune;
+        updateRuneDiv(i);
+      });
+      setTimeout(()=>checkMatches(true),400);
+    },300);
+  }
+}
+
+// Power Rune activates row/column clear
+function activatePowerRune(index){
+  const row=Math.floor(index/boardSize);
+  const col=index%boardSize;
+  let toClear=[];
+
+  // Add row
+  for(let c=0;c<boardSize;c++) toClear.push(row*boardSize+c);
+  // Add column
+  for(let r=0;r<boardSize;r++) toClear.push(r*boardSize+col);
+
+  // Animate burst
+  toClear.forEach(i=>{
+    if(board[i]!==null){
+      const div=boardDiv.children[i];
+      div.style.animation='burst 0.4s';
+      setTimeout(()=>{ div.style.animation=''; },400);
+    }
+  });
+
+  // Clear runes
+  toClear.forEach(i=>board[i]=null);
+
+  applyGravity();
+  setTimeout(()=>checkMatches(true),400);
+  score += toClear.length*10;
+  scoreDiv.textContent='Score: '+score;
+}
+
+createBoard();
+
+function goBack() {
+  window.location.href = "../index.html";
+}
+function restartGame() {
+  score = 0;
+  scoreDiv.textContent = 'Score: 0';
+  createBoard();
+}
+function showComboText(index, points) {
+  const tile = boardDiv.children[index];
+  const rect = tile.getBoundingClientRect();
+
+  const text = document.createElement("div");
+  text.className = "combo-text";
+  text.textContent = "+" + points;
+
+  text.style.left = rect.left + window.scrollX + "px";
+  text.style.top = rect.top + window.scrollY + "px";
+
+  document.body.appendChild(text);
+
+  setTimeout(() => {
+    text.remove();
+  }, 800);
+}
+</script>
+
+</body>
+</html>

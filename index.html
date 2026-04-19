@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asher Wolf | Portfolio</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- MAIN CANVAS -->
+<canvas id="bg"></canvas>
+
+<!-- CURSOR HAND -->
+<div id="cursor-hand">
+  <img src="images/final_fantasyCursor-removebg-preview.png" alt="FinalFantasyCursor">
+</div>
+
+<header>
+  <h1>Asher Wolf</h1>
+  <p><p>Game Developer • Systems Programmer • IT Enthusiast</p></p>
+
+  <div class="links">
+    <a href="https://github.com/FancyPandax" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/asher-wolf-9609331b1" target="_blank">LinkedIn</a>
+    <a href="Resume/Resume.html" target="_blank">Resume</a>
+  </div>
+</header>
+
+<section>
+  <h2>About Me</h2>
+  <p>
+    I’m Asher Wolf, an aspiring computer scientist and software developer passionate about building efficient, creative, and impactful solutions. I enjoy turning ideas into functional projects and continuously learning new technologies to improve my craft.
+  </p>
+</section>
+<div class="filter-bar">
+  <button onclick="filterProjects('all')">All</button>
+  <button onclick="filterProjects('GameDev')">GameDev</button>
+  <button onclick="filterProjects('Systems')">Systems</button>
+  <button onclick="filterProjects('physics')">Physics</button>
+</div>
+
+<section>
+  <h2>Projects</h2>
+
+  <div class="card" data-tags="GameDev" onclick="openProject('rune')">
+    <h3>Rune Spellcasting System</h3>
+    <p>Gesture-based magic system where players draw shapes to cast spells.</p>
+  </div>
+
+  <div class="card" data-tags="Systems" onclick="openProject('softbody')">
+    <h3>Soft-Body Cube Simulation</h3>
+    <p>C++ + Raylib project featuring interactive soft-body physics.</p>
+  </div>
+
+  <div class="card" data-tags="GameDev" onclick="openProject('rift')">
+    <h3>Rift Alignment</h3>
+    <p>Play an interactive browser game built from scratch.</p>
+  </div>
+
+</section>
+
+<section>
+  <h2>Contact</h2>
+  <p>Email: asher.wolf00@gmail.com</p>
+</section>
+
+<footer>
+  <p>Thank you for your time</p>
+  <p>
+    <a href="https://github.com/FancyPandax" target="_blank">GitHub</a> |
+    <a href="https://www.linkedin.com/in/asher-wolf-9609331b1" target="_blank">LinkedIn</a>
+  </p>
+</footer>
+
+<!-- PROJECT MODAL -->
+<div id="project-modal" class="modal">
+  <div class="modal-content">
+    <span id="modal-close">&times;</span>
+
+    <h2 id="modal-title">Project Title</h2>
+    <p id="modal-description">Project description goes here</p>
+
+    <a id="modal-link" href="#" target="_blank">Open Project</a>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
