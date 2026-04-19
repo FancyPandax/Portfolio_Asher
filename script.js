@@ -51,10 +51,12 @@ function openInternal(url) {
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, ffCanvas.width, ffCanvas.height);
 
+    
+
     particles.forEach(p => {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(190, 220, 255,${p.alpha})`;
+      ctx.fillStyle = `rgba(255, 127, 150,${p.alpha})`;
       ctx.fill();
 
       p.y -= p.speedY;
