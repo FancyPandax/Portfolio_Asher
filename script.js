@@ -118,6 +118,15 @@ const projects = {
     title: "Rift Alignment",
     desc: "Interactive browser game built from scratch.",
     link: "RiftAllignmentGame/rift-alignment-game.html"
+  },
+
+  graphs: {
+
+   title: "Matrix Representation of Graphs",
+    desc: "Interactive Visualizer that leverages AI tools",
+    link: "https://fancypandax.github.io/MatrixRepGraphsToolWebsite/"
+
+  
   }
 };
 
